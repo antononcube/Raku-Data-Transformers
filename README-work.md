@@ -1,10 +1,22 @@
 # Data::Transformers
 
-Raku package with algorithms for transforming and smoothing data.
+Raku package with algorithms for transforming and smoothing data. Provides the subs:
+
+- [X] DONE `accumulate`
+- [X] DONE `array-pad`
+- [ ] TODO `array-filter`
+- [X] DONE `center-array`
+- [ ] TODO `clip`
+- [ ] TODO `difference`
+- [ ] TODO `list-convolve`
+- [ ] TODO `list-correlate`
+- [ ] TODO `moving-average`
+- [ ] TODO `moving-map`
+- [ ] TODO `moving-median`
+- [X] DONE `rescale`
+- [ ] TODO `standardize`
 
 ----
-
------
 
 ## Installation
 
@@ -22,13 +34,44 @@ zef install https://github.com/antononcube/Raku-Data-Tranformers.git
 
 ----
 
+## `accumulate`
+
+Cumulative sums:
+
+```raku
+use Data::Transformers;
+
+accumulate([3, 8, 4, 11, 9, 2]);
+```
+
+Cumulative sums for a list of lists of numbers:
+
+```raku
+accumulate((1...10).rotor(2))
+```
+
+### Applications
+
+Triangular numbers:
+
+```raku
+(1..10) ==> accumulate
+```
+
+Random walk:
+
+```raku
+use Text::Plot;
+use Data::Generators;
+
+text-list-plot(accumulate(random-real([-1, 1], 100)))
+```
+
 ## `array-pad` 
 
 Pad the edges with 0s: 
 
 ```raku
-use Data::Transformers;
-
 array-pad([1,2,3], 1)
 ```
 

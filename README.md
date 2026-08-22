@@ -1,10 +1,22 @@
 # Data::Transformers
 
-Raku package with algorithms for transforming and smoothing data.
+Raku package with algorithms for transforming and smoothing data. Provides the subs:
+
+- [X] DONE `accumulate`
+- [X] DONE `array-pad`
+- [ ] TODO `array-filter`
+- [X] DONE `center-array`
+- [ ] TODO `clip`
+- [ ] TODO `difference`
+- [ ] TODO `list-convolve`
+- [ ] TODO `list-correlate`
+- [ ] TODO `moving-average`
+- [ ] TODO `moving-map`
+- [ ] TODO `moving-median`
+- [X] DONE `rescale`
+- [ ] TODO `standardize`
 
 ----
-
------
 
 ## Installation
 
@@ -22,13 +34,71 @@ zef install https://github.com/antononcube/Raku-Data-Tranformers.git
 
 ----
 
+## `accumulate`
+
+Cumulative sums:
+
+```raku
+use Data::Transformers;
+
+accumulate([3, 8, 4, 11, 9, 2]);
+```
+```
+# [3 11 15 26 35 37]
+```
+
+Cumulative sums for a list of lists of numbers:
+
+```raku
+accumulate((1...10).rotor(2))
+```
+```
+# [[1 2] [4 6] [9 12] [16 20] [25 30]]
+```
+
+### Applications
+
+Triangular numbers:
+
+```raku
+(1..10) ==> accumulate
+```
+```
+# [1 3 6 10 15 21 28 36 45 55]
+```
+
+Random walk:
+
+```raku
+use Text::Plot;
+use Data::Generators;
+
+text-list-plot(accumulate(random-real([-1, 1], 100)))
+```
+```
+# +---+---------+---------+----------+---------+----------+--+      
+# |                                                          |      
+# +                                              **          +  2.00
+# |   ** *                                      *            |      
+# |   * ****                                    *  *         |      
+# +     *  **                                 **    ****     +  0.00
+# |         * *                               **       ***   |      
+# |          *                               *       ** *    |      
+# +           *     *                    *  **               + -2.00
+# |            **   **        *   * ***** ***                |      
+# |             ****  *  *   *   * *  *    *                 |      
+# +              * * * * ** ** ****  *                       + -4.00
+# |               *     * ***   *                            |      
+# |                                                          |      
+# +---+---------+---------+----------+---------+----------+--+      
+#     0.00      20.00     40.00      60.00     80.00      100.00
+```
+
 ## `array-pad` 
 
 Pad the edges with 0s: 
 
 ```raku
-use Data::Transformers;
-
 array-pad([1,2,3], 1)
 ```
 ```

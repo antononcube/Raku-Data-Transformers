@@ -6,6 +6,9 @@
         "Anton Antonov"
     ],
     "auth": "zef:antononcube",
+    "depends": [
+        "Data::TypeSystem"
+    ],
     "build-depends": [],
     "provides": {
         "Data::Transformers": "lib/Data/Transformers.rakumod",

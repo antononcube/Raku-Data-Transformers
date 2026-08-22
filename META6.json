@@ -1,7 +1,7 @@
 {
     "name": "Data::Transformers",
     "description": "Raku package with algorithms for transforming and smoothing data.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "authors": [
         "Anton Antonov"
     ],

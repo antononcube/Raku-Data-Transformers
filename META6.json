@@ -9,7 +9,8 @@
     "build-depends": [],
     "provides": {
         "Data::Transformers": "lib/Data/Transformers.rakumod",
-        "Data::Transformers::Arrays": "lib/Data/Transformers/Arrays.rakumod"
+        "Data::Transformers::Arrays": "lib/Data/Transformers/Arrays.rakumod",
+        "Data::Transformers::Rescale": "lib/Data/Transformers/Rescale.rakumod"
     },
     "license": "Artistic-2.0",
     "tags": [

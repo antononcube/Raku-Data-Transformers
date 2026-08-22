@@ -1,0 +1,27 @@
+{
+    "name": "Data::Transformers",
+    "description": "Raku package with algorithms for transforming and smoothing data.",
+    "version": "0.0.1",
+    "authors": [
+        "Anton Antonov"
+    ],
+    "auth": "zef:antononcube",
+    "build-depends": [],
+    "provides": {
+        "Data::Transformers": "lib/Data/Transformers.rakumod",
+        "Data::Transformers::Arrays": "lib/Data/Transformers/Arrays.rakumod"
+    },
+    "license": "Artistic-2.0",
+    "tags": [
+        "array",
+        "clip",
+        "convolution",
+        "convolve",
+        "pad",
+        "padding",
+        "rescale",
+        "standardize"
+    ],
+    "api": "0",
+    "source-url": "https://github.com/antononcube/Raku-Data-Transformers"
+}

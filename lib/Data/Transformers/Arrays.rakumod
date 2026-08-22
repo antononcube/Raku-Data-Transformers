@@ -1,6 +1,6 @@
 use v6.d;
 
-unit module CellularAutomata::Utilities;
+unit module Data::Transformers::Arrays;
 
 #==========================================================
 # Array padding helpers

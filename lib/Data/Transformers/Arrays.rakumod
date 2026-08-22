@@ -136,19 +136,32 @@ sub pad-axis(
             @right-values = (^$right).map({ local-clone(@values[*-1] // $template) }).Array;
         } elsif $mode eq 'Periodic' || $mode eq 'Reversed' || $mode eq 'Reflected' || $mode eq 'ReversedNegation' {
             fail 'Named padding requires a nonempty array' unless @values;
+            my $size = @values.elems;
+            my $reversed-period = 2 * $size;
+            my $reflected-period = 2 * ($size - 1);
             for ^$left -> $index {
-                my $source = $mode eq 'Periodic' ?? @values[local-mod($index - $left, @values.elems)]
-                    !! $mode eq 'Reversed' ?? @values[local-mod($left - $index - 1, @values.elems)]
-                    !! $mode eq 'Reflected' ?? @values[local-mod($index + 1, @values.elems)]
-                    !! @values[local-mod($left - $index - 1, @values.elems)];
-                @left-values.push($mode eq 'ReversedNegation' ?? local-negate($source) !! local-clone($source));
+                my $position = $index - $left;
+                my $phase = $mode eq 'Periodic' ?? local-mod($position, $size)
+                    !! $mode eq 'Reflected' && $size > 1 ?? local-mod($position, $reflected-period)
+                    !! local-mod($position, $reversed-period);
+                my $source-index = $mode eq 'Periodic' ?? $phase
+                    !! $mode eq 'Reflected' ?? ($phase < $size ?? $phase !! $reflected-period - $phase)
+                    !! ($phase < $size ?? $phase !! $reversed-period - 1 - $phase);
+                my $source = @values[$source-index];
+                @left-values.push($mode eq 'ReversedNegation' && $phase >= $size
+                    ?? local-negate($source) !! local-clone($source));
             }
             for ^$right -> $index {
-                my $source = $mode eq 'Periodic' ?? @values[local-mod($index, @values.elems)]
-                    !! $mode eq 'Reversed' ?? @values[local-mod(@values.elems - $index - 1, @values.elems)]
-                    !! $mode eq 'Reflected' ?? @values[local-mod(@values.elems - $index - 2, @values.elems)]
-                    !! @values[local-mod(@values.elems - $index - 1, @values.elems)];
-                @right-values.push($mode eq 'ReversedNegation' ?? local-negate($source) !! local-clone($source));
+                my $position = $index + $size;
+                my $phase = $mode eq 'Periodic' ?? local-mod($index, $size)
+                    !! $mode eq 'Reflected' && $size > 1 ?? local-mod($position, $reflected-period)
+                    !! local-mod($position, $reversed-period);
+                my $source-index = $mode eq 'Periodic' ?? $phase
+                    !! $mode eq 'Reflected' ?? ($phase < $size ?? $phase !! $reflected-period - $phase)
+                    !! ($phase < $size ?? $phase !! $reversed-period - 1 - $phase);
+                my $source = @values[$source-index];
+                @right-values.push($mode eq 'ReversedNegation' && $phase >= $size
+                    ?? local-negate($source) !! local-clone($source));
             }
     } elsif positional($padding) {
             fail 'Cyclic padding cannot use an empty sequence' unless $padding.elems;

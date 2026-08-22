@@ -87,11 +87,10 @@ multi sub rescale(@x, $domain is copy = Whatever, $codomain is copy = Whatever) 
     die "The third argument is expected to be a list of two numbers or Whatever."
     unless $codomain ~~ (List:D | Array:D | Seq:D) && $codomain.elems == 2 && $codomain.all ~~ Numeric:D;
 
-
     my ($min, $max) = |$domain;
     my ($vmin, $vmax) = |$codomain;
 
-    if -Inf < $min < Inf && -Inf < $max < Inf && -Inf < $vmin < Inf && -Inf < $vmax < Inf {
+    if $min.abs < Inf && $max.abs < Inf && $vmin.abs < Inf && $vmax.abs < Inf {
         return @x.map({ rescale-finite($_, $min, $max, $vmin, $vmax) }).List
     } else {
         return @x.map({ rescale-inf($_, $min, $max, $vmin, $vmax) }).List

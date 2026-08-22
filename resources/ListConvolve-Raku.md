@@ -8,8 +8,8 @@ sub list-convolve(
     Mu:D $data,
     Mu:D $alignment = [-1, 1],
     Mu:D $padding = CyclicData,
-    Callable:D $multiply = &infix:<*>,
-    Callable:D $combine = &infix:<+>,
+    Callable:D &multiply = &infix:<*>,
+    Callable:D &combine = &infix:<+>,
     Int:D $level = 0
     --> Positional:D
 )
@@ -31,11 +31,11 @@ For the two-argument form, the no-overhang result has length
 The following forms are equivalent to the signature above:
 
 ```raku
-list-convolve($kernel, $data)
-list-convolve($kernel, $data, $alignment)
-list-convolve($kernel, $data, $alignment, $padding)
-list-convolve($kernel, $data, $alignment, $padding, $multiply, $combine)
-list-convolve($kernel, $data, $alignment, $padding, $multiply, $combine, $level)
+list-convolve($kernel, $data);
+list-convolve($kernel, $data, $alignment);
+list-convolve($kernel, $data, $alignment, $padding);
+list-convolve($kernel, $data, $alignment, $padding, $multiply, $combine);
+list-convolve($kernel, $data, $alignment, $padding, $multiply, $combine, $level);
 ```
 
 The implementation may additionally expose named arguments
@@ -56,13 +56,13 @@ elements. Kernel indices use the Wolfram-style convention in which `1` is the
 first kernel element and `-1` is the last kernel element. The kernel is
 advanced one data position between successive output elements.
 
-| Alignment | Meaning |
-|---|---|
-| `[-1, 1]` | No overhangs; the default. |
-| `[-1, -1]` | Maximum overhang at the right end only. |
-| `[1, 1]` | Maximum overhang at the left end only. |
-| `[1, -1]` | Maximum overhang at both ends. |
-| `$k` | Equivalent to `[$k, $k]`; align kernel element `$k` with successive data elements. |
+| Alignment  | Meaning                                                                            |
+|------------|------------------------------------------------------------------------------------|
+| `[-1, 1]`  | No overhangs; the default.                                                         |
+| `[-1, -1]` | Maximum overhang at the right end only.                                            |
+| `[1, 1]`   | Maximum overhang at the left end only.                                             |
+| `[1, -1]`  | Maximum overhang at both ends.                                                     |
+| `$k`       | Equivalent to `[$k, $k]`; align kernel element `$k` with successive data elements. |
 
 For a pair `[$left, $right]`, the first output includes the first data value
 paired with kernel element `$left`, and the last output includes the last data
@@ -86,13 +86,13 @@ kernel placement are computed independently in each dimension.
 Padding is used only for kernel positions that overhang the data. The padding
 argument may be:
 
-| Value | Meaning |
-|---|---|
-| `CyclicData` | Repeat the data cyclically; the default. |
-| Any scalar `$p` | Repeat `$p` at every overhanging position. |
-| `@padding` | Repeat the supplied sequence cyclically. |
-| `$data` | Treat the data itself as cyclic. |
-| `[]` | Do not pad; omit contributions outside the data. |
+| Value           | Meaning                                          |
+|-----------------|--------------------------------------------------|
+| `CyclicData`    | Repeat the data cyclically; the default.         |
+| Any scalar `$p` | Repeat `$p` at every overhanging position.       |
+| `@padding`      | Repeat the supplied sequence cyclically.         |
+| `$data`         | Treat the data itself as cyclic.                 |
+| `[]`            | Do not pad; omit contributions outside the data. |
 
 `CyclicData` is a package sentinel meaning “use `$data` as the padding
 sequence”; it is distinct from an arbitrary sequence supplied by the caller.
@@ -108,7 +108,7 @@ combine operation, or a typed error when no identity can be inferred.
 
 ## Generalized Convolution
 
-The `multiply` callable replaces pairwise multiplication and `combine` replaces
+The `&multiply` callable replaces pairwise multiplication and `&combine` replaces
 addition:
 
 ```raku
@@ -121,10 +121,10 @@ list-convolve(@kernel, @data, 1, 0, &multiply, &combine);
 ```
 
 Conceptually, for every output position, the implementation evaluates
-`combine` over the sequence produced by applying `multiply` to each aligned
+`&combine` over the sequence produced by applying `&multiply` to each aligned
 kernel/data pair. The default callables are `*` and `+`.
 
-`combine` must receive terms in kernel traversal order. If it is a variadic
+`&combine` must receive terms in kernel traversal order. If it is a variadic
 operator rather than a callable accepting a sequence, the implementation may
 adapt it, but nested data must retain the kernel's structure. When a custom
 combine function is used in place of `+`, explicit nested expressions are
@@ -152,7 +152,7 @@ output coordinate.
 ```raku
 list-convolve(
     [[1, 1], [1, 1]],
-    [[a, b, c], [d, e, f], [g, h, i]]
+    [['a', 'b', 'c'], ['d', 'e', 'f'], ['g', 'h', 'i']]
 );
 ```
 

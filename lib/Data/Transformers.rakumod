@@ -11,4 +11,33 @@ sub EXPORT {
             ;
 }
 
+
 unit module Data::Transformers;
+
+use Data::TypeSystem::Predicates;
+
+our proto sub accumulate($data) is export {*}
+
+multi sub accumulate(@data) {
+
+    return do given @data {
+
+        when $_.all ~~ Numeric:D { ([\+] @data).Array }
+
+        when is-matrix($_) {
+            my @res;
+            for $_ -> @a {
+                if @res {
+                    @res.push((@res.tail <<+>> @a).Array)
+                } else {
+                    @res.push(@a.Array)
+                }
+            }
+            return @res.Array
+        }
+
+        die {
+            'The first argument is expected to be list of numbers or a list numeric lists.'
+        }
+    }
+}

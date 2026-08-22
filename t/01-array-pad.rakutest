@@ -1,7 +1,7 @@
 use v6.d;
 
 use Test;
-use Data::Transformers::Arrays;
+use Data::Transformers;
 
 is-deeply array-pad([1, 2, 3], 1), [0, 1, 2, 3, 0], 'pads both sides with zero';
 is-deeply array-pad([1, 2, 3], [2, 4]), [0, 0, 1, 2, 3, 0, 0, 0, 0],

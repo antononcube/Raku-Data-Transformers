@@ -71,7 +71,7 @@ sub rescale-inf($x, $a, $b, $A, $B) {
 }
 
 #----------------------------------------------------------
-proto sub rescale(Numeric:D $x, |) is export {*}
+our proto sub rescale(Numeric:D $x, |) is export {*}
 
 multi sub rescale(Numeric:D $x, $domain is copy = Whatever, $codomain is copy = Whatever) {
     my @res = rescale([$x,], $domain, $codomain);

@@ -1,7 +1,7 @@
 use v6.d;
 
 use Test;
-use Data::Transformers::Arrays;
+use Data::Transformers;
 
 is-deeply center-array(5), [0, 0, 1, 0, 0],
     'creates a centered one-dimensional impulse';

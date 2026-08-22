@@ -1,0 +1,4 @@
+Changes of the Raku package "Data::Transformers".
+
+2026-08-22 0.0.1
+    - First version with &array-pad, &center-array, and &rescale.

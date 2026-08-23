@@ -78,6 +78,17 @@ multi sub rescale(Numeric:D $x, $domain is copy = Whatever, $codomain is copy = 
     return @res.head;
 }
 
+multi sub rescale($x where * ~~ Associative:D, $domain is copy = Whatever, $codomain is copy = Whatever) {
+    given $x {
+        when $_ ~~ Bag:D { rescale($_.Hash, $domain, $codomain) }
+        when $_ ~~ Mix:D { rescale($_.Hash, $domain, $codomain) }
+        when $_ ~~ Hash:D { ($_.keys Z=> rescale($_.values, $domain, $codomain)).Hash }
+        die {
+            'Do not know how to process the given associative argument.'
+        }
+    }
+}
+
 multi sub rescale(@x, $domain is copy = Whatever, $codomain is copy = Whatever) {
     if $domain.isa(Whatever) { $domain = (@x.min, @x.max) }
     die "The second argument is expected to be a list of two numbers or Whatever."

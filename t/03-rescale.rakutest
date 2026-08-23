@@ -21,4 +21,36 @@ subtest {
 
 }, "infinite";
 
+## 3
+subtest {
+    is-deeply
+            rescale([-.7, .5, 1.2, 5.6, 1.8]),
+            (0.0, <4/21>, <19/63>, 1.0, <25/63>),
+            'rescale with default [vmin, vmax]';
+}, "array";
+
+
+## 3
+subtest {
+
+    is-deeply
+            rescale({ a => -.7, b => .5, c => 1.2, d => 5.6, e => 1.8}),
+            {a => 0.0, b => <4/21>, c => <19/63>, d => 1.0, e => <25/63>},
+            'Hash rescale with default [vmin, vmax]';
+
+    is-deeply
+            rescale({ a => -.7, b => .5, c => 1.2, d => 5.6, e => 1.8}.Mix),
+            {a => 0.0, b => <4/21>, c => <19/63>, d => 1.0, e => <25/63>},
+            'Mix rescale with default [vmin, vmax]';
+
+    my @data = 4 xx 3, 5 xx 2, 1 xx 4, 2 xx 7;
+    @data .= flat(:hammer);
+
+    is-deeply
+            rescale(@data.Bag),
+            ${1 => 0.4, 2 => 1.0, 4 => 0.2, 5 => 0.0},
+            'Mix rescale with default [vmin, vmax]';
+
+}, "hashes, mixes, bags";
+
 done-testing;

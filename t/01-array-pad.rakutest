@@ -13,10 +13,31 @@ is-deeply
         ['x', 'x', 1, 2, 3, 'x', 'x'],
         'pads with a constant expression';
 
-is-deeply
-        array-pad([1, 2, 3], 2, [10, 20]),
-        [20, 10, 1, 2, 3, 10, 20],
-        'cycles a padding sequence';
+subtest {
+        # Padding to the left:
+        # With padding x_1, x_2, ... x_s, cyclic repetitions of the x_i are effectively laid down and then
+        # the list is superimposed on top of them, with the last element of the list lying on an occurrence of x_s.
+
+        # Padding to the right:
+        # With padding x_1, x_2, ... x_s, cyclic repetitions of the x_i are effectively laid down and then
+        # the list is superimposed on top of them, with the first element of the list lying on an occurrence of x_1.
+
+        is-deeply
+                array-pad([1, 2, 3], 2, [10, 20]),
+                [20, 10, 1, 2, 3, 10, 20],
+                'cycles a padding 2-sequence';
+
+        is-deeply
+                array-pad([1, 2, 3], 2, [10, 20, 30]),
+                [20, 30, 1, 2, 3, 10, 20],
+                'cycles a padding 3-sequence';
+
+        is-deeply
+                array-pad([1, 2, 3, 4, 5], [4, 2], [10, 20, 30]),
+                [10, 20, 30, 10, 1, 2, 3, 4, 5, 10, 20],
+                'cycles a padding 3-sequence';
+
+}, 'list padding';
 
 is-deeply
         array-pad([[1, 2], [3, 4]], [[1], [2]]),

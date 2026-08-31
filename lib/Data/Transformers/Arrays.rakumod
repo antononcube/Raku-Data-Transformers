@@ -165,7 +165,10 @@ sub pad-axis(
             }
     } elsif positional($padding) {
             fail 'Cyclic padding cannot use an empty sequence.' unless $padding.elems;
-            @left-values = (^$left).map({ padding-item($padding[local-mod($left - $_ - 1, $padding.elems)], $template) }).Array;
+            @left-values = (^$left).map({
+                my $phase = local-mod($_ - $left - @values.elems, $padding.elems);
+                padding-item($padding[$phase], $template)
+            }).Array;
             @right-values = (^$right).map({ padding-item($padding[local-mod($_, $padding.elems)], $template) }).Array;
         } else {
             @left-values = (^$left).map({ padding-item($padding, $template) }).Array;

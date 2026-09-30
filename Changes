@@ -1,5 +1,8 @@
 Changes of the Raku package "Data::Transformers".
 
+2026-09-29 0.0.3
+    - Fixes of inconsistent rescale formulas.
+
 2026-08-31 0.0.2
     - Made &array-pad use lower case and hyphenated names for the padding rules.
         - Following closer the specs of Wolfram Language's PadLeft and PadRight.

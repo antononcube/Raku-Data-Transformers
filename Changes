@@ -1,5 +1,12 @@
 Changes of the Raku package "Data::Transformers".
 
+2026-10-24 0.0.4
+    - Implemented &standardize
+        - Uses standard deviation via the package "Stats" which use @data.elems denominator
+            - Instead of (@data.elems - 1)
+        - Works only on lists of numbers and lists of lists of numbers
+            - I.e. should be generalized on "deeper" arrays
+
 2026-09-29 0.0.3
     - Fixes of inconsistent rescale formulas.
 

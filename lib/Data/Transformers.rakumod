@@ -15,6 +15,11 @@ sub EXPORT {
 unit module Data::Transformers;
 
 use Data::TypeSystem::Predicates;
+use Stats;
+
+#==========================================================
+# Accumulate
+#==========================================================
 
 our proto sub accumulate($data) is export {*}
 
@@ -40,4 +45,39 @@ multi sub accumulate(@data) {
             'The first argument is expected to be list of numbers or a list numeric lists.'
         }
     }
+}
+
+#==========================================================
+# Standardize
+#==========================================================
+
+# Should the mean and standard deviation be calculated here or make a dependency on "Stats".
+
+#| Standardize data (shift and rescale the elements of a list)
+our proto sub standardize(@data, | --> Array:D) is export {*}
+
+multi sub standardize(@data, $center = Whatever, $scale = Whatever --> Array:D) {
+    return standardize(@data, :$center, :$scale)
+}
+
+multi sub standardize(
+        @data where @data.all ~~ Numeric:D,
+        :$center is copy = Whatever,
+        :$scale is copy = Whatever --> Array:D) {
+
+    $center = mean(@data) if $center.isa(Whatever);
+    die 'The second argument ($center) is expected to be a number or Whatever' unless $center ~~ Numeric:D;
+
+    $scale = sd(@data) if $scale.isa(Whatever);
+    die 'The third argument ($scale) is expected to be a number or Whatever' unless $scale ~~ Numeric:D;
+
+    my @res = (@data <<->> $center) <</>> $scale;
+    return @res
+}
+
+multi sub standardize(@data where @data.all ~~ Positional:D, :$center = Whatever, :$scale = Whatever --> Array:D) {
+    # This assumes that we _just_ have a matrix of numbers.
+    my @res = |zip(|@data».Array).map({ standardize($_, :$center, :$scale) });
+    @res = |zip(|@res».Array);
+    return @res;
 }

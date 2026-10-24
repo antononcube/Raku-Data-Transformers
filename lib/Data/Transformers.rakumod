@@ -66,10 +66,12 @@ multi sub standardize(
         :$scale is copy = Whatever --> Array:D) {
 
     $center = mean(@data) if $center.isa(Whatever);
-    die 'The second argument ($center) is expected to be a number or Whatever' unless $center ~~ Numeric:D;
+    $center = $center(@data) if $center ~~ Callable:D;
+    die 'The second argument ($center) is expected to be a number, a callable, or Whatever' unless $center ~~ Numeric:D;
 
     $scale = sd(@data) if $scale.isa(Whatever);
-    die 'The third argument ($scale) is expected to be a number or Whatever' unless $scale ~~ Numeric:D;
+    $scale = $scale(@data) if $scale ~~ Callable:D;
+    die 'The third argument ($scale) is expected to be a number, a callable, or Whatever' unless $scale ~~ Numeric:D;
 
     my @res = (@data <<->> $center) <</>> $scale;
     return @res

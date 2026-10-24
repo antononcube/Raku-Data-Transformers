@@ -6,8 +6,10 @@ use Data::Transformers;
 plan *;
 
 # 1
+my @data1 = 6.5, 3.8, 6.6, 5.7, 6.0, 6.4, 5.3;
+
 is-deeply
-        standardize([6.5, 3.8, 6.6, 5.7, 6.0, 6.4, 5.3]),
+        standardize(@data1),
         [0.8177071028391707e0, -2.1543437132493533e0, 0.9277830589905974e0, -0.06290054637224389e0, 0.2673273220820366e0, 0.7076311466877439e0, -0.5032043709779511e0],
         "array of numbers";
 # 2
@@ -35,6 +37,12 @@ my @res2 = (-1.243340345792906e0, -2.228244293486194e0, -0.6381153754151752e0),
            (-1.3474927254188402e0, 0.6488369192117437e0, 0.904249913958276e0);
 
 
-        is-deeply standardize(@data2), @res2, "array of arrays of numbers";
+is-deeply standardize(@data2), @res2, "array of arrays of numbers";
+
+## 3
+is-deeply
+        standardize(@data1, center => { $_.sum / $_.elems }, scale => {1} ),
+        [<26/35>, <-137/70>, <59/70>, <-2/35>, <17/70>, <9/14>, <-16/35>],
+        "array of arrays of numbers with callable center and scale";
 
 done-testing;

@@ -14,7 +14,7 @@ Raku package with algorithms for transforming and smoothing data. Provides the s
 - [ ] TODO `moving-map`
 - [ ] TODO `moving-median`
 - [X] DONE `rescale`
-- [ ] TODO `standardize`
+- [X] DONE `standardize`
 
 ----
 
@@ -220,3 +220,18 @@ rescale([-.7, .5, 1.2, 5.6, 1.8])
 ## `clip`
 
 *Not implemented yet.*
+
+----
+
+## `standardize`
+
+`standardize(@data)` shifts and rescales the elements of `@data` to have zero mean and unit sample variance.
+
+`standardize(@data, $center, $scale)` shifts by `$center` and scales by `$scale`. 
+The arguments `$center` and `$scale` can be numbers, callables, or `Whatever`.
+
+Compute standard scores for data:
+
+```raku
+standardize([6.5, 3.8, 6.6, 5.7, 6.0, 6.4, 5.3])
+```

@@ -14,7 +14,7 @@ Raku package with algorithms for transforming and smoothing data. Provides the s
 - [ ] TODO `moving-map`
 - [ ] TODO `moving-median`
 - [X] DONE `rescale`
-- [ ] TODO `standardize`
+- [X] DONE `standardize`
 
 ----
 
@@ -76,21 +76,21 @@ use Data::Generators;
 text-list-plot(accumulate(random-real([-1, 1], 100)))
 ```
 ```
-# +---+---------+---------+----------+---------+----------+--+      
-# |                                                          |      
-# +                *                                *    *   +  2.00
-# |               * *                                   *    |      
-# +   **        **  **                              **  *    +  1.00
-# |   *    *  ** **  *                            ** ***     |      
-# |    ***  *** *     *      *                               |      
-# +     *** *         ***   *            * * *   *           +  0.00
-# |                    *  *  *   *      * ****               |      
-# +                     *   * *   *   *     * ****           + -1.00
-# |                      **   *****    *       **            |      
-# +                        *       **** *                    + -2.00
-# |                                 **                       |      
-# +                                                          + -3.00
-# +---+---------+---------+----------+---------+----------+--+      
+# +---+---------+---------+----------+---------+----------+--+       
+# |                                                          |       
+# |                                          *****           |       
+# |                                      * ***   ** *        |       
+# +                                   ******       * **      +  10.00
+# |                       **         **                ***   |       
+# |                      ** **********                   *   |       
+# |                  *****    *                              |       
+# +              * ***                                       +   5.00
+# |             ****                                         |       
+# |           ***                                            |       
+# |   ***    *                                               |       
+# +   * *****                                                +   0.00
+# |                                                          |       
+# +---+---------+---------+----------+---------+----------+--+       
 #     0.00      20.00     40.00      60.00     80.00      100.00
 ```
 
@@ -332,3 +332,21 @@ rescale([-.7, .5, 1.2, 5.6, 1.8])
 ## `clip`
 
 *Not implemented yet.*
+
+----
+
+## `standardize`
+
+`standardize(@data)` shifts and rescales the elements of `@data` to have zero mean and unit sample variance.
+
+`standardize(@data, $center, $scale)` shifts by `$center` and scales by `$scale`. 
+The arguments `$center` and `$scale` can be numbers, callables, or `Whatever`.
+
+Compute standard scores for data:
+
+```raku
+standardize([6.5, 3.8, 6.6, 5.7, 6.0, 6.4, 5.3])
+```
+```
+# [0.8177071028391707 -2.1543437132493533 0.9277830589905974 -0.06290054637224389 0.2673273220820366 0.7076311466877439 -0.5032043709779511]
+```

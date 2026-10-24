@@ -6,6 +6,7 @@ Changes of the Raku package "Data::Transformers".
             - Instead of (@data.elems - 1)
         - Works only on lists of numbers and lists of lists of numbers
             - I.e. should be generalized on "deeper" arrays
+        - The center and scale arguments can be numbers, callables, or Whatever.
 
 2026-09-29 0.0.3
     - Fixes of inconsistent rescale formulas.
